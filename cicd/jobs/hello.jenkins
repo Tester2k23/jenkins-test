@@ -1,0 +1,18 @@
+apiVersion: jenkins.io/v1
+kind: JenkinsJob
+metadata:
+  name: hello-job
+spec:
+  type: pipeline
+  pipeline:
+    script: |
+      pipeline {
+          agent any
+          stages {
+              stage('Build') {
+                  steps {
+                      sh 'echo "Hello, Jenkins!"'
+                  }
+              }
+          }
+      }
