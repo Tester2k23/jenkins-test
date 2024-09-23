@@ -1,2 +1,12 @@
-#!/bin/bash
-echo "Hello, Jenkins!"
+pipeline {
+    agent any
+    stages {
+        stage('Hello') {
+            steps {
+                script {
+                    echo "Hello, Jenkins!"
+                }
+            }
+        }
+    }
+}
