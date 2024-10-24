@@ -36,7 +36,13 @@ def main(pull_number):
 
     if r.status_code == 200:
         content = r.json()
+        link = content['_links']['commits']['href']
+        sha = content['head']['sha']
         mcs = content['merge_commit_sha']
+
+        print(f"PR Commit Link: {link}")
+        print(f"SHA: {sha}")
+        print(f"Merge Commit SHA: {mcs}")
         
         # Get the merge commit details
         mcsr_url = f'{base_url}/commits/{mcs}'
@@ -46,6 +52,13 @@ def main(pull_number):
 
         if mcsr.status_code >= 200 and mcsr.status_code < 300:
             content = mcsr.json()
+            print(json.dumps(content, indent=4))
+            committed_files = content.get('files', [])
+            commit_urls = [file['raw_url'] for file in committed_files]
+
+            print("Committed Files URLs:")
+            for file_url in commit_urls:
+                print(file_url)
             mcsr_files = [z['filename'] for z in content['files']]
             for f in content['files']:
                 file_name = f['filename']
