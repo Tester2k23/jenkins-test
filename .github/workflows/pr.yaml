@@ -11,14 +11,12 @@ jobs:
       - name: Print env
         run: |
           env
-      - name: Dump GitHub context
-        id: github_context_step
+      - name: gihub context
         run: echo $JSON
         env:
           JSON: ${{ toJSON(github) }}
       
-      - name: Dump GitHub context
-        id: github_context_step-2
-        run: echo $JSON2
+      - name: pr number
+        run: echo $PR_NUMBER
         env:
-          JSON2: ${{ secrets.TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number}}
