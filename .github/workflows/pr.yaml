@@ -24,7 +24,7 @@ jobs:
 
       - name: Run Linter Script
         env:
-          GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_API_TOKEN: ${{ secrets.TOKEN }}
           PULL_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           python .github/workflows/test.py $PULL_NUMBER
