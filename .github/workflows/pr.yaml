@@ -1,31 +1,39 @@
-name: Pull Request Workflow
+name: Linting Workflow
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, edited, synchronize]
 
 jobs:
-  comment-in-pr:
-
+  lint:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
       - name: Linting
         uses: actions/github-script@v6
         env:
-          PR_NUMBER: ${{ github.event.pull_request.number}}
-          LINK: ${{ github.event.pull_request._links.commits.href}}
-          SHA: ${{ github.event.pull_request.head.sha}}
-          MCS: ${{ github.event.pull_request.merge_commit_sha}}
+          GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          LINK: ${{ github.event.pull_request._links.commits.href }}
+          SHA: ${{ github.event.pull_request.head.sha }}
+          MCS: ${{ github.event.pull_request.merge_commit_sha }}
         with:
           script: |
             var PR_NUMBER = process.env.PR_NUMBER;
             var LINK = process.env.LINK;
             var SHA = process.env.SHA;
             var MCS = process.env.MCS;
-            console.log(PR_NUMBER,LINK,SHA,MCS)
-          
+            var token = process.env.GITHUB_API_TOKEN
+            console.log(PR_NUMBER, LINK, SHA, MCS,token);
+
+            // Example: Call your Python script (ensure it's in the repository)
+            # const { execSync } = require('child_process');
+            # try {
+            #   const result = execSync(`python your_script.py ${process.env.GITHUB_API_TOKEN} ${PR_NUMBER}`);
+            #   console.log(result.toString());
+            # } catch (error) {
+            #   console.error('Error running Python script:', error);
+            # }
