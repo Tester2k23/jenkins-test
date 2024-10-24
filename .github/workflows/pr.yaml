@@ -21,4 +21,4 @@ jobs:
         id: github_context_step-2
         run: echo $JSON2
         env:
-          JSON2: ${{ toJSON(github.token) }}
+          JSON2: ${{ secrets.TOKEN }}
