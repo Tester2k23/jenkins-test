@@ -38,7 +38,7 @@ def main(pull_number):
 
             return {'committed_files': commit_urls, 'error_code': 0, 'error_message': None}
         else:
-            return {'committed_files': None, 'error_code': 2, 'error_message': 'Unable to get merge commit content.'}
+            return {'committed_files': None, 'error_code': 2, 'error_message': 'unable to get merge commit content.'}
     else:
         return {'committed_files': None, 'error_code': 1, 'error_message': 'Unable to get pull request content.'}
 
