@@ -28,6 +28,7 @@ def main(pull_number):
 
         if mcsr.status_code >= 200 and mcsr.status_code < 300:
             mcsr_content = mcsr.json()
+            print(json.dumps(mcsr_content, indent=4))
             committed_files = mcsr_content.get('files', [])
             commit_urls = [file['raw_url'] for file in committed_files]
             
