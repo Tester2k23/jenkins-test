@@ -13,8 +13,7 @@ jobs:
     steps:
       - run: |
           gh pr review ${{ github.event.pull_request.number}} --body "Your review message"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
       - name: Print
         env:
           PR_NUMBER: ${{ github.event.pull_request.number}}
