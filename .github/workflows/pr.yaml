@@ -11,9 +11,9 @@ jobs:
       - name: Print
         env:
           PR_NUMBER: ${{ github.event.pull_request.number}}
-          LINK: ${{ github.event._links.commits.href}}
-          SHA: ${{ github.event.head.sha}}
-          MCS: ${{ github.event.merge_commit_sha}}
+          LINK: ${{ github.event.pull_request._links.commits.href}}
+          SHA: ${{ github.event.pull_request.head.sha}}
+          MCS: ${{ github.event.pull_request.merge_commit_sha}}
         run: |
           echo "$PR_NUMBER"
           echo "$LINK"
