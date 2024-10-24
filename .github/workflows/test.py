@@ -4,7 +4,7 @@ import json
 import sys
 
 def post_status(pull_number, msg, committers, action):
-    msg = msg + '\n\n**Note:** `INFO` level messages can be ignored and the PR can be merged successfully. In case you want to know more about the linter output, kindly visit this link: https://github.optum.com/Kafka/kaas-prod#interpreting-linter-output'
+    msg = msg + '\n\n**Note:** `INFO` level messages can be ignored and the PR can be merged successfully. In case you want to know more about the linter output, kindly visit this link:#interpreting-linter-output'
     token = os.environ['GITHUB_API_TOKEN']
     base_url = 'https://api.github.com/repos/Tester2k23/jenkins-test'
     headers = {'Authorization': 'token ' + token}
