@@ -13,4 +13,5 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Print workspace directory
-        run: echo "The workspace directory is: ${{ github.workspace }}"
+        run: |
+          echo "The workspace directory is: ${{ github.workspace }}"
