@@ -15,10 +15,6 @@ jobs:
       - name: Run Linter Script
         env:
           GITHUB_API_TOKEN: ${{ secrets.TOKEN }}
-          PULL_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           echo "$GITHUB_API_TOKEN" > key
-          cat key
-      - name: Run Linter Script
-        run: |
           cat key
