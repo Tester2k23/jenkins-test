@@ -12,9 +12,5 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Run Linter Script
-        env:
-          GITHUB_API_TOKEN: ${{ secrets.TOKEN }}
-        run: |
-          echo "$GITHUB_API_TOKEN" > key
-          cat key
+      - name: Print workspace directory
+        run: echo "The workspace directory is: ${{ github.workspace }}"
