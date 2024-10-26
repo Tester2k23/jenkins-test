@@ -19,3 +19,6 @@ jobs:
         run: |
           echo "$GITHUB_API_TOKEN" > key
           cat key
+      - name: Run Linter Script
+        run: |
+          cat key
