@@ -1,0 +1,13 @@
+name: Apply Job
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  sending-post-request:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sending POST request
+        run: |
+          pwd
