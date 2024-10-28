@@ -1,0 +1,17 @@
+name: Linting Workflow
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Print workspace directory
+        run: |
+          ls -la
