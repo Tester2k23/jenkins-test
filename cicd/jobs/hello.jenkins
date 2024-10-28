@@ -7,7 +7,7 @@ pipelineJob('hello-job') {
                     stages {
                         stage('Hello') {
                             steps {
-                                echo "Hello, Jenkins!"
+                                echo "Hell, Jenkins!"
                             }
                         }
                     }
