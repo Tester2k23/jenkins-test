@@ -1,16 +1,27 @@
-name: Apply Job
+name: Check PR Files
 
 on:
-  push:
-    branches:
-      - main
+  pull_request:
+    types: [opened, synchronize]
+
 jobs:
-  sending-post-request:
+  check-files:
     runs-on: ubuntu-latest
     steps:
-      - name: Test
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Get changed files from PR
+        id: get_changed_files
         run: |
-          files=$(gh pr view 6)
-          echo $files
+          changed_files=$(gh pr view ${{ github.event.pull_request.number }} --json files --jq '.files[].path')
+          echo "Changed files: $changed_files"
+          echo "::set-output name=files::$changed_files"
+
+      - name: Process changed files
+        run: |
+          IFS=' ' read -r -a files <<< "${{ steps.get_changed_files.outputs.files }}"
+          for file in "${files[@]}"; do
+            echo "Processing file: $file"
+            # Add your processing logic here
+          done
