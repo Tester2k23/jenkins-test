@@ -21,14 +21,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           pr_number=${{ github.event.inputs.pr_number }}
-          changed_files=$(gh pr view $pr_number --json files --jq '.files[].path')
-          echo "Changed files: $changed_files"
-          echo "::set-output name=files::$changed_files"
-
-      - name: Process changed files
-        run: |
-          IFS=' ' read -r -a files <<< "${{ steps.get_changed_files.outputs.files }}"
-          for file in "${files[@]}"; do
+          files=$(gh pr view 6 --json files --jq '.files[].path')
+          for file in $files; do
             echo "Processing file: $file"
-            # Add your processing logic here
           done
