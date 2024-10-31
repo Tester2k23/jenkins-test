@@ -17,6 +17,8 @@ jobs:
 
       - name: Get changed files from PR
         id: get_changed_files
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           pr_number=${{ github.event.inputs.pr_number }}
           changed_files=$(gh pr view $pr_number --json files --jq '.files[].path')
