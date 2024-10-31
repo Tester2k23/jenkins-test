@@ -10,4 +10,5 @@ jobs:
     steps:
       - name: Sending POST request
         run: |
-          pwd
+          files=git diff --name-only HEAD^ HEAD
+          echo $files
