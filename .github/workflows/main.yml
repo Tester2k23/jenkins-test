@@ -10,5 +10,5 @@ jobs:
     steps:
       - name: Sending POST request
         run: |
-          files=$(gh pr view 6 --files)
+          files=$(gh pr view 6)
           echo $files
