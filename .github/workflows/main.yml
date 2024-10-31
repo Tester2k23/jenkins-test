@@ -10,5 +10,5 @@ jobs:
     steps:
       - name: Sending POST request
         run: |
-          files=$(git diff --name-only HEAD^ HEAD)
+          files=$(gh pr view 6 --files)
           echo $files
