@@ -21,6 +21,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           pwd
+          ls -la
           pr_number=${{ inputs.pr_number }}
           files=$(gh pr view ${{ inputs.pr_number }} --json files --jq '.files[].path')
           for file in $files; do
