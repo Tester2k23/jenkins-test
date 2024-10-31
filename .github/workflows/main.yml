@@ -21,7 +21,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           pr_number=${{ github.event.inputs.pr_number }}
-          files=$(gh pr view 6 --json files --jq '.files[].path')
+          files=$(gh pr view pr_number --json files --jq '.files[].path')
           for file in $files; do
             echo "Processing file: $file"
           done
