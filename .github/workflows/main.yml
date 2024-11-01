@@ -30,5 +30,3 @@ jobs:
           # for file in $files; do
           #   echo "Processing file: $file"
           # done
-          export PYTHONPATH="$(pwd)/script:$PYTHONPATH"
-          echo $PYTHONPATH
