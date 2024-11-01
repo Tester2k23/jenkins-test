@@ -1,12 +1,9 @@
 name: Check PR Files
 
 on:
-  workflow_dispatch:
-    inputs:
-      pr_number:
-        description: 'Pull Request Number'
-        required: true
-        type: number
+  push:
+    branches:
+      - main
 
 jobs:
   check-pr-files:
@@ -20,6 +17,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          echo ${{github.event}}
           pwd
           echo $HOME
           ls -la
