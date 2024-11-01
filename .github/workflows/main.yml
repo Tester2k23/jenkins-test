@@ -11,7 +11,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
+      - name: Dump GitHub context
+        id: github_context_step
+        run: echo $JSON
+        env:
+          JSON: ${{ toJSON(github) }}
       - name: Get changed files from PR
         id: get_changed_files
         env:
@@ -21,10 +25,10 @@ jobs:
           pwd
           echo $HOME
           ls -la
-          pr_number=${{ inputs.pr_number }}
-          files=$(gh pr view ${{ inputs.pr_number }} --json files --jq '.files[].path')
-          for file in $files; do
-            echo "Processing file: $file"
-          done
+          # pr_number=${{ inputs.pr_number }}
+          # files=$(gh pr view ${{ inputs.pr_number }} --json files --jq '.files[].path')
+          # for file in $files; do
+          #   echo "Processing file: $file"
+          # done
           export PYTHONPATH="$(pwd)/script:$PYTHONPATH"
           echo $PYTHONPATH
