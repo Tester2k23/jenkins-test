@@ -15,7 +15,7 @@ jobs:
         id: github_context_step
         run: echo $JSON
         env:
-          JSON: ${{ toJSON(github) }}
+          JSON: ${{ toJSON(github.event) }}
       - name: Get changed files from PR
         id: get_changed_files
         env:
