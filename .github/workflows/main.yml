@@ -35,7 +35,7 @@ jobs:
           # # done
       - name: Set Variables
         run: |
-          echo "BASE_URL=https://api.github.com" >> $GITHUB_ENV
+          echo "BASE_URL=https://api.github.com" >> $GITHUB_EN
           echo "OWNER=${{ github.repository_owner }}" >> $GITHUB_ENV
           echo "REPO=${{ github.event.repository.name }}" >> $GITHUB_ENV
           echo "TARGET_BRANCH=main" >> $GITHUB_ENV
