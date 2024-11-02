@@ -22,7 +22,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           cat $GITHUB_EVENT_PATH
-          # pwd
+          pwd
           # echo $HOME
           # ls -la
           # # pr_number=${{ inputs.pr_number }}
