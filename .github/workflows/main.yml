@@ -21,12 +21,12 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          echo ${{github.event}}
-          pwd
-          echo $HOME
-          ls -la
-          # pr_number=${{ inputs.pr_number }}
-          # files=$(gh pr view ${{ inputs.pr_number }} --json files --jq '.files[].path')
-          # for file in $files; do
-          #   echo "Processing file: $file"
-          # done
+          cat $GITHUB_EVENT_PATH
+          # pwd
+          # echo $HOME
+          # ls -la
+          # # pr_number=${{ inputs.pr_number }}
+          # # files=$(gh pr view ${{ inputs.pr_number }} --json files --jq '.files[].path')
+          # # for file in $files; do
+          # #   echo "Processing file: $file"
+          # # done
