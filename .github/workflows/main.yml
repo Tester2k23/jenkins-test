@@ -45,9 +45,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          PR_NUMBER=$(curl -s "$BASE_URL/repos/$OWNER/$REPO/pulls?state=closed&base=$TARGET_BRANCH&head=$OWNER:$SOURCE_BRANCH" \
+          PR_NUMBER=$(curl -s "$BASE_URL/repos/$OWNER/$REPO/pulls?state=closed" \
             -H "Authorization: Bearer $GITHUB_TOKEN" \
-            -H "Accept: application/vnd.github.v3+json" | jq -r '.[0].number')
+            -H "Accept: application/vnd.github.v3+json")
 
           echo "Pull Request Number: $PR_NUMBER"
           echo "pr_number=$PR_NUMBER" >> $GITHUB_ENV
