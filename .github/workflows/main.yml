@@ -22,6 +22,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           cat $GITHUB_EVENT_PATH
+          curl -s -H "Authorization: token $GH_TOKEN" \
+            "https://api.github.com/repos/${{ github.repository }}/pulls?state=closed"
           pwd
           # echo $HOME
           # ls -la
