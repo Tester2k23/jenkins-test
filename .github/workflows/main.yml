@@ -19,7 +19,7 @@ jobs:
 
       - name: Run script
         run: |
-          DIFF=$(git show --name-only HEAD | grep '.csv' || true)
+          DIFF=$(git show HEAD | grep '.csv' || true)
           echo $DIFF
           
           python -c "
