@@ -51,6 +51,12 @@ jobs:
 
           echo "Pull Request Number: $PR_NUMBER"
           echo "pr_number=$PR_NUMBER" >> $GITHUB_ENV
+
+          FILES=$(curl -s "$BASE_URL/repos/$OWNER/$REPO/pulls/$PR_NUMBER/files" \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json")
+          echo "$RESPONSE"
+          
           
       - name: Use PR number
         run: |
