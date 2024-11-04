@@ -5,30 +5,45 @@ on:
     branches:
       - main  # or your default branch
 jobs:
-  test-env:
-    needs: test
+  get-pr-number:
     runs-on: ubuntu-latest
+    outputs:
+      pr_number: ${{ steps.get_pr_number.outputs.pr_number }}
+    steps:
+      - name: Get PR Number
+        id: get_pr_number
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          PR_DATA=$(curl -s "https://api.github.com/repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/pulls?state=closed" \
+                      -H "Authorization: Bearer $GH_TOKEN" \
+                      -H "Accept: application/vnd.github.v3+json")
 
+          PR_NUMBER=$(echo "$PR_DATA" | jq -r '.[0].number')
+          MERGED_AT=$(echo "$PR_DATA" | jq -r '.[0].merged_at')
+          
+          echo "pr_number=$PR_NUMBER" >> $GITHUB_ENV
+          echo "::set-output name=pr_number::$PR_NUMBER"
+  test-env:
+    needs: get-pr-number
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
       - name: Test env
         run: |
-          echo ${{env.pr_number}}
-          echo $GITHUB_ENV
-          
-          PR_RESPOSE=$(curl -s "https://api.github.com/repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/pulls/${{ env.pr_number }}/files" \
+          PR_RESPOSE=$(curl -s "https://api.github.com/repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/pulls/${{ ${{ needs.get-pr-number.outputs.pr_number }} }}/files" \
             -H "Authorization: Bearer $GH_TOKEN" \
             -H "Accept: application/vnd.github.v3+json")
           echo $PR_RESPOSE
           
-  test:
-    runs-on: ubuntu-latest
+  # test:
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v2
 
       # - name: Dump GitHub context
       #   id: github_context_step
@@ -52,23 +67,23 @@ jobs:
           # # for file in $files; do
           # #   echo "Processing file: $file"
           # # done
-      - name: Set Variables
-        run: |
-          echo "BASE_URL=https://api.github.com" >> $GITHUB_ENV
-          echo "OWNER=${{ github.repository_owner }}" >> $GITHUB_ENV
-          echo "REPO=${{ github.event.repository.name }}" >> $GITHUB_ENV
-          echo "TARGET_BRANCH=main" >> $GITHUB_ENV
-          echo "SOURCE_BRANCH=${{ github.ref }}" >> $GITHUB_ENV
+      # - name: Set Variables
+      #   run: |
+      #     echo "BASE_URL=https://api.github.com" >> $GITHUB_ENV
+      #     echo "OWNER=${{ github.repository_owner }}" >> $GITHUB_ENV
+      #     echo "REPO=${{ github.event.repository.name }}" >> $GITHUB_ENV
+      #     echo "TARGET_BRANCH=main" >> $GITHUB_ENV
+      #     echo "SOURCE_BRANCH=${{ github.ref }}" >> $GITHUB_ENV
 
-      - name: Get PR Number
-        env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
-        run: |
-          PR_NUMBER=$(curl -s "$BASE_URL/repos/$OWNER/$REPO/pulls?state=closed" \
-            -H "Authorization: Bearer $GITHUB_TOKEN" \
-            -H "Accept: application/vnd.github.v3+json" | jq -r '.[0].number')
+      # - name: Get PR Number
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.TOKEN }}
+      #   run: |
+      #     PR_NUMBER=$(curl -s "$BASE_URL/repos/$OWNER/$REPO/pulls?state=closed" \
+      #       -H "Authorization: Bearer $GITHUB_TOKEN" \
+      #       -H "Accept: application/vnd.github.v3+json" | jq -r '.[0].number')
 
-          echo "Pull Request Number: $PR_NUMBER"
-          echo "pr_number=$PR_NUMBER" >> $GITHUB_ENV
+      #     echo "Pull Request Number: $PR_NUMBER"
+      #     echo "pr_number=$PR_NUMBER" >> $GITHUB_ENV
 
         
