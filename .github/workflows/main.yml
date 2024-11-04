@@ -15,6 +15,9 @@ jobs:
 
       - name: Test env
         run: |
+          echo ${{env.pr_number}}
+          echo $GITHUB_ENV
+          
           PR_RESPOSE=$(curl -s "https://api.github.com/repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/pulls/${{ env.pr_number }}/files" \
             -H "Authorization: Bearer $GH_TOKEN" \
             -H "Accept: application/vnd.github.v3+json")
