@@ -1,57 +1,39 @@
-name: Check PR Files
+name: Python Test
 
 on:
   push:
     branches:
-      - main
-
+      - main  # or your default branch
 jobs:
-  check-pr-files:
+  test:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Dump GitHub context
-        id: github_context_step
-        run: echo $JSON
-        env:
-          JSON: ${{ toJSON(github.event) }}
-      - name: Get changed files from PR
-        id: get_changed_files
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          # cat $GITHUB_EVENT_PATH
-          # git log -1 --pretty=%B
-          # curl -s -H "Authorization: token $GH_TOKEN" \
-          #   "https://api.github.com/repos/${{ github.repository }}/pulls?state=closed"
-          pwd
-          # echo $HOME
-          # ls -la
-          # # pr_number=${{ inputs.pr_number }}
-          # # files=$(gh pr view ${{ inputs.pr_number }} --json files --jq '.files[].path')
-          # # for file in $files; do
-          # #   echo "Processing file: $file"
-          # # done
-      - name: Set Variables
-        run: |
-          echo "BASE_URL=https://api.github.com" >> $GITHUB_ENV
-          echo "OWNER=${{ github.repository_owner }}" >> $GITHUB_ENV
-          echo "REPO=${{ github.event.repository.name }}" >> $GITHUB_ENV
-          echo "TARGET_BRANCH=main" >> $GITHUB_ENV
-          echo "SOURCE_BRANCH=${{ github.ref }}" >> $GITHUB_ENV
 
-      - name: Get PR Number
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          PR_NUMBER=$(curl -s "$BASE_URL/repos/$OWNER/$REPO/pulls?state=closed" \
-            -H "Authorization: Bearer $GITHUB_TOKEN" \
-            -H "Accept: application/vnd.github.v3+json" | jq -r '.[0].number')
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'  # Change as necessary
 
-          echo "Pull Request Number: $PR_NUMBER"
-          echo "pr_number=$PR_NUMBER" >> $GITHUB_ENV
-          
-      - name: Use PR number
+      - name: Run script
         run: |
-          echo "The PR number is: ${{ env.pr_number }}"
+          python -c "
+          import subprocess
+          import logging
+
+          logging.basicConfig(level=logging.ERROR)
+          logger = logging.getLogger()
+
+          try:
+              files = subprocess.check_output(
+                  'git diff --name-only HEAD^ HEAD | grep \'.csv\' || true',
+                  shell=True,
+                  text=True
+              ).strip().splitlines()
+
+              print('Modified CSV files:', files)
+          except subprocess.CalledProcessError as e:
+              logger.error('Error fetching modified files', extra={'error': str(e)})
+          "
