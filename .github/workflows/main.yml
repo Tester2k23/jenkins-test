@@ -19,9 +19,6 @@ jobs:
 
       - name: Run script
         run: |
-          DIFF=$(git show HEAD | grep '.csv' || true)
-          echo $DIFF
-          
           python -c "
           import subprocess
           import logging
@@ -31,7 +28,7 @@ jobs:
 
           try:
               files = subprocess.check_output(
-                  'git diff --name-only HEAD^ HEAD | grep \'.csv\' || true',
+                  'git show --name-only HEAD | grep \'.csv\' || true',
                   shell=True,
                   text=True
               ).strip().splitlines()
