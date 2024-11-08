@@ -48,7 +48,7 @@ jobs:
       - name: Get PR Number
         id: get_pr_number
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.token }}
         run: |
           COMMIT_SHA=${{ github.sha }}
           PR_DATA=$(curl -s "https://api.github.com/repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/commits/$COMMIT_SHA/pulls" \
