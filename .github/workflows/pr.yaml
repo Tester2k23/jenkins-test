@@ -25,4 +25,4 @@ jobs:
         env:
           GITHUB_API_TOKEN: ${{ secrets.TOKEN }}
         run: |
-          python cicd/lint.py
+          python cicd/jobs/lint.py
