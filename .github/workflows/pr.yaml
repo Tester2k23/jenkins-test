@@ -1,28 +1,28 @@
-name: Manual Trigger Workflow
+name: Post GitHub Status
 
 on:
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Deployment environment'
-        required: true
-        default: 'staging'
-      version:
-        description: 'Version to deploy'
-        required: false
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
-  deploy:
+  post-status:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
+      - name: Checkout the repository
         uses: actions/checkout@v2
 
-      - name: Deploy to environment
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
         run: |
-          echo "Deploying to ${{ github.event.inputs.environment }}"
-          if [ -n "${{ github.event.inputs.version }}" ]; then
-            echo "Deploying version ${{ github.event.inputs.version }}"
-          else
-            echo "Deploying latest version"
-          fi
+          pip install requests
+
+      - name: Post status to PR
+        env:
+          GITHUB_API_TOKEN: ${{ secrets.TOKEN }}
+        run: |
+          python cicd/lint.py
