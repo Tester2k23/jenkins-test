@@ -1,28 +1,17 @@
-name: Manual Trigger Workflow
+name: Pull Request
 
 on:
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Deployment environment'
-        required: true
-        default: 'staging'
-      version:
-        description: 'Version to deploy'
-        required: false
+  - pull_request
 
 jobs:
-  deploy:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          ref: ${{ github.ref }}
 
       - name: Deploy to environment
         run: |
-          echo "Deploying to ${{ github.event.inputs.environment }}"
-          if [ -n "${{ github.event.inputs.version }}" ]; then
-            echo "Deploying version ${{ github.event.inputs.version }}"
-          else
-            echo "Deploying latest version"
-          fi
+          ls -la
